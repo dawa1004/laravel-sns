@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Article extends Model
 {
+    protected $fillable = [
+        'title',
+        'body',
+    ];
     // userメソッドの戻り値が、BelongsToクラスであることを宣言
     public function user(): BelongsTo
     {
