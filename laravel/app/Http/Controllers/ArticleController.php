@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    // コンストラクタ,オブジェクト生成の度に初期処理としてメソッド実行
+    public function __construct()
+    {
+        $this->authorizeResource(Article::class, 'article');
+    }
+
     public function index()
     {
        $articles = Article::all()->sortByDesc('created_at');
