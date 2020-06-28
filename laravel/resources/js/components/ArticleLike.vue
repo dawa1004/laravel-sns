@@ -5,11 +5,31 @@
       class="btn m-0 p-1 shadow-none"
     >
       <i class="fas fa-heart mr-1"
+         :class="{'red-text':this.isLikedBy}"
       />
     </button>
-    10
+    {{ countLikes }} <!-- dataから受け取ったいいね数表示 -->
   </div>
 </template>
 
 <script>
+  export default {
+    props: {
+      initialIsLikedBy: {
+        type: Boolean,
+        default: false,
+      },
+      initialCountLikes: {
+        type: Number,
+        default: 0,
+      },
+    },
+    data() {
+      return {
+        isLikedBy: this.initialIsLikedBy,
+        // Bladeから渡されたいいね数が入ったプロパティinitialCountLikesを、いったんデータcountLikesにセット
+        countLikes: this.initialCountLikes,
+      }
+    },
+  }
 </script>
