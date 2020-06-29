@@ -6,6 +6,7 @@
     >
       <i class="fas fa-heart mr-1"
          :class="{'red-text':this.isLikedBy}"
+         @click="clickLike"
       />
     </button>
     {{ countLikes }} <!-- dataから受け取ったいいね数表示 -->
@@ -23,6 +24,13 @@
         type: Number,
         default: 0,
       },
+      authorized: {
+        type: boolean,
+        default: false,
+      },
+      endpoint: {
+        type: String,
+      },
     },
     data() {
       return {
@@ -30,6 +38,29 @@
         // Bladeから渡されたいいね数が入ったプロパティinitialCountLikesを、いったんデータcountLikesにセット
         countLikes: this.initialCountLikes,
       }
+    },
+    methods: {
+      clickLike() {
+        if (!this.authorized) {
+          alert('いいね機能はログイン中のみ使用できます')
+          return
+        }
+        this.isLikedBy
+        ? this.unlike
+        : this.like()
+      },
+      async like() {
+        const response = await axios.put(this.endpoint)
+
+        this.isLikeBy = true
+        this.countLikes = response.data.countLikes
+      },
+      async unlike() {
+        const response = await axios.delete(this.endpoint)
+
+        this.isLikedBy = false
+        this.countLikes = response.data.countLikes
+      },
     },
   }
 </script>
