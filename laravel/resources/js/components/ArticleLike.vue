@@ -5,11 +5,11 @@
       class="btn m-0 p-1 shadow-none"
     >
       <i class="fas fa-heart mr-1"
-         :class="{'red-text':this.isLikedBy}"
+         :class="{'red-text':this.isLikedBy, 'animated heartBeat fast':this.gotToLike}"
          @click="clickLike"
       />
     </button>
-    {{ countLikes }} <!-- dataから受け取ったいいね数表示 -->
+    {{ countLikes }}
   </div>
 </template>
 
@@ -25,7 +25,7 @@
         default: 0,
       },
       authorized: {
-        type: boolean,
+        type: Boolean,
         default: false,
       },
       endpoint: {
@@ -35,8 +35,8 @@
     data() {
       return {
         isLikedBy: this.initialIsLikedBy,
-        // Bladeから渡されたいいね数が入ったプロパティinitialCountLikesを、いったんデータcountLikesにセット
         countLikes: this.initialCountLikes,
+        gotToLike: false,
       }
     },
     methods: {
@@ -45,21 +45,24 @@
           alert('いいね機能はログイン中のみ使用できます')
           return
         }
+
         this.isLikedBy
-        ? this.unlike
-        : this.like()
+          ? this.unlike()
+          : this.like()
       },
       async like() {
         const response = await axios.put(this.endpoint)
 
-        this.isLikeBy = true
+        this.isLikedBy = true
         this.countLikes = response.data.countLikes
+        this.gotToLike = true
       },
       async unlike() {
         const response = await axios.delete(this.endpoint)
 
         this.isLikedBy = false
         this.countLikes = response.data.countLikes
+        this.gotToLike = false
       },
     },
   }
